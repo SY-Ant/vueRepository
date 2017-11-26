@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>英雄列表</title>
+</head>
+<body>
+	<div id="add"></div>
+	<script type="text/javascript"  src="./vue.js"></script>
+	<script type="text/javascript">
+		new  Vue ({
+			el:'#add',
+			template:`
+				<div>
+
+				<!--基本元素展示区 -->
+				<div>
+				<ul>
+					<li  v-for = "(item,index)  in  heros"  :style= " 'background-color :' + (index%2 ==  0 ? 'red' : 'yellowgreen')"> 
+						  {{item.id}}  {{item.name}}  
+					</li>
+				</ul>
+				</div>
+				
+				<!--添加英雄-->
+
+				<div  :style = " 'background-color :' +  'skyblue' ">
+					ID: <input type="text"  v-model = "addId" /> 英雄列表: <input type="text"  v-model = "addName"/>  <button  @click = "addHero">添加英雄</button>
+				</div>
+
+
+				<!--更新英雄-->
+				<div  :style = " 'background-color :' +  'greenyellow' ">
+					ID: <input type="text"  v-model = "updateId" /> 英雄列表: <input type="text"  v-model = "updateName"/>  <button  @click = "updateHero">更新英雄</button>
+				</div>
+
+
+				<!--删除英雄-->
+				<div  :style = " 'background-color :' +  'hotpink' ">
+					ID: <input type="text"  v-model = "delId" /> <button  @click = "delHero">删除英雄</button>
+				</div>
+
+
+
+				</div>
+
+
+
+
+
+
+			`,
+			data:function () {
+				return  {
+					heros: [{id:1,name:'西施'},{id:2,name:'貂蝉'},{id:3,name:'杨玉环'},{id:4,name:'李白'},],
+					addId:'',
+					addName:'',
+					updateId:'',
+					updateName:'',
+				}
+			},
+			methods:{
+				addHero:function() {
+					this.heros.push({
+						id:this.addId,
+						name:this.addName,
+					})
+					this.addId = '';
+					this.addName = '';
+				},
+				updateHero:function () {
+					var  hero  = this.heros.find((ele,index,arr) =>{  
+						return  ele.id  == this.updateId
+					});
+
+					if(!hero) {
+						alert('没有该英雄');
+						return;
+					}
+
+					hero.name = this.updateName;
+
+					 this.updateId ='';
+					 this.updateName = '';
+				},
+				delHero:function() {
+
+					var  index  = this.heros.findIndex((ele,index,arr) =>{
+						return  ele.id  == this.delId  
+					});
+
+					if(index == -1) {
+						alert('没有你要的id,无法删除');
+						return;
+					}
+					this.heros.splice(index,1);
+					this.delId = '';
+				}
+			}
+
+
+
+
+
+
+
+//总结       
+// 1.相当于创建一个对象    data以对象或者函数的形式    =>   (1)作为这个对象的相关属性   (2)  可以与标签的属性建立联系  v-model 
+// 2.methods   以一个对象的形式展现 {里面相当于一个方法  属性名:操作函数}  里面访问相关属性需要this.相关属性
+
+
+
+
+
+
+
+
+
+
+
+
+
+		})
+
+
+
+
+
+
+	</script>
+
+	
+</body>
+</html>
